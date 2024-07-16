@@ -1,3 +1,4 @@
+// Purpose: Establish connection to the database using Sequelize
 const Sequelize = require('sequelize');
 require('dotenv').config();
 

@@ -1,24 +1,64 @@
-const path = require("path");
-const express = require("express");
-const session = require("express-session");
-const exphbs = require("express-handlebars");
-const SequelizeStore = require("connect-session-sequelize")(session.Store);
+// Description: This file is the entry point for the application. It sets up the server and the port, and syncs the database
+const PORT = process.env.PORT || 3001;
+const path = require('path');
+const express = require('express');
+const session = require('express-session');
+const exphbs = require('express-handlebars');
+const routes = require('./controllers');
+const sequelize = require('./config/connection');
 
-const routes = require("./routes");
+const SequelizeStore = require('connect-session-sequelize')(session.Store);
+const hbs = exphbs.create({});
 
-const models = require("./models")
-const sequelize = require("./config/connection");
+// Create the server
+const app = express();
 
-sequelize.sync({ alter: true })
+// Middleware
+app.use(session(sess));
 
-const app = express()
+app.engine('handlebars', hbs.engine);
+app.set('view engine', 'handlebars');
+
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.use(express.static(path.join(__dirname, 'public')));
+
 app.use(routes);
 
-app.get("/", (req, res) => {
-    res.status(200).send("Hello World!")
-})
+// Handlebars
+const handlebars = require('handlebars');
 
-const port = process.env.PORT ?? 3001
-app.listen(port, () => {
-    console.log(`Now listening at http://localhost:${port}`)
-})
+handlebars.registerHelper('eq', function(arg1, arg2, options) {
+    if (arg1 === arg2) {
+        return options.fn ? options.fn(this) : '';
+    } else {
+        return options.inverse ? options.inverse(this) : '';
+    }
+});
+
+handlebars.registerHelper('format_date', (date) => {
+    return date.toLocaleDateString();
+});
+
+
+const sess = {
+    secret: 'Super secret secret',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        maxAge: 60 * 60 * 1000,
+        httpOnly: true,
+        secure: false,
+        sameSite: 'strict'
+    },
+    store: new SequelizeStore({
+        db: sequelize
+    })
+};
+
+// Sync database, then start server
+sequelize.sync({ force: false }).then(() => {
+    app.listen(PORT, () => console.log(`Now listening at http://127.0.0.1:${PORT}`));
+});
