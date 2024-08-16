@@ -4,7 +4,7 @@ const path = require('path');
 const express = require('express');
 const session = require('express-session');
 const exphbs = require('express-handlebars');
-const routes = require('./controllers');
+const routes = require('./routes');
 const sequelize = require('./config/connection');
 
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
@@ -14,18 +14,25 @@ const hbs = exphbs.create({});
 const app = express();
 
 // Middleware
-app.use(session(sess));
-
-app.engine('handlebars', hbs.engine);
-app.set('view engine', 'handlebars');
-
+const sess = {
+    secret: 'Super secret secret',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        maxAge: 60 * 60 * 1000,
+        httpOnly: true,
+        secure: false,
+        sameSite: 'strict'
+    },
+    store: new SequelizeStore({
+        db: sequelize
+    })
+};
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(express.static(path.join(__dirname, 'public')));
-
-app.use(routes);
 
 // Handlebars
 const handlebars = require('handlebars');
@@ -42,21 +49,12 @@ handlebars.registerHelper('format_date', (date) => {
     return date.toLocaleDateString();
 });
 
+app.use(session(sess));
 
-const sess = {
-    secret: 'Super secret secret',
-    resave: false,
-    saveUninitialized: true,
-    cookie: {
-        maxAge: 60 * 60 * 1000,
-        httpOnly: true,
-        secure: false,
-        sameSite: 'strict'
-    },
-    store: new SequelizeStore({
-        db: sequelize
-    })
-};
+app.engine('handlebars', hbs.engine);
+app.set('view engine', 'handlebars');
+
+app.use(routes);
 
 // Sync database, then start server
 sequelize.sync({ force: false }).then(() => {
