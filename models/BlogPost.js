@@ -19,7 +19,7 @@ BlogPost.init(
             type: DataTypes.STRING,
             allowNull: false,
         },
-        user_id: {
+        author: {
             type: DataTypes.INTEGER,
             references: {
                 model: 'users',

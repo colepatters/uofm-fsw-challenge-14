@@ -1,0 +1,26 @@
+<h1>Register</h1>
+
+{{#if error}}
+  <div id="register-error">
+    <h3>An error occured while registering:</h3>
+    <pre>{{error}}</pre>
+  </div>
+{{/if}}
+
+<form method="post">
+  <label>
+    <p>Username</p>
+    <input type="text" name="username" id="username-input" />
+  </label>
+
+  <label>
+    <p>Password</p>
+    <input type="password" name="password" id="password-input" />
+  </label>
+
+  <button type="submit">Submit</button>
+</form>
+
+<style>
+  div#register-error { outline: 2px solid red; padding: 5px }
+</style>

@@ -1,6 +1,13 @@
 <div id="navbar">
   <a href="/">Home</a>
-  <a href="/login">Login</a>
+  <a href="/dashboard">Dashboard</a>
+
+  {{#if user}}
+    <a href="/logout">Log Out</a>
+  {{else}}
+    <a href="/login">Login</a>
+    <a href="/register">Register</a>
+  {{/if}}
 </div>
 
 <style>
