@@ -10,6 +10,16 @@
 
   <label>
     <p>Content</p>
-    <input type="text" name="content" id="content-input" />
+    <textarea name="content" id="content-input"></textarea>
   </label>
+
+  <br />
+
+  <button type="submit">Submit</button>
 </form>
+
+<h2>Your Posts</h2>
+{{#each posts}}
+  {{> post}}
+{{/each}}
+
