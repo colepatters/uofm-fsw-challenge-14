@@ -11,4 +11,10 @@ BlogPost.belongsTo(User, {
     foreignKey: 'author'
 });
 
+BlogPost.hasMany(Comment)
+Comment.belongsTo(BlogPost)
+
+User.hasMany(Comment)
+Comment.belongsTo(User)
+
 module.exports = { User, BlogPost, Comment };

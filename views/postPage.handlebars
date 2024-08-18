@@ -1,0 +1,42 @@
+<h1>{{title}}</h1>
+
+<p>{{content}}</p>
+
+<p>Posted by {{author.username}} at {{createdAt}}</p>
+
+<hr />
+
+<strong>Comments</strong>
+
+<button id="leave-comment-btn">Leave a Comment</button>
+
+{{#each comments}}
+  <div class="post-comment">
+    <p>{{content}}</p>
+    <p>Posted by {{author.username}} at {{createdAt}}</p>
+  </div>
+{{/each}}
+
+<dialog>
+  <h4>New Comment</h4>
+  <form method="post" type="dialog">
+    <label>
+      <p>Content</p>
+      <textarea name="content" id="comment-content-input" required></textarea>
+    </label>
+
+    <button type="submit">Submit</button>
+  </form>
+</dialog>
+
+<style>
+  .post-comment { border: 2px solid black; padding: 5px; margin-top: 5px;
+  margin-bottom: 5px; }
+</style>
+
+<script lang="js">
+  const newCommentDialogEl = document.querySelector("dialog"); const
+  leaveCommentButtonEl = document.querySelector("#leave-comment-btn");
+  leaveCommentButtonEl.addEventListener("click", () =>
+  newCommentDialogEl.showModal());
+</script>

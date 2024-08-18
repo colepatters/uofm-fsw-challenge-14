@@ -1,25 +1,37 @@
 <h1>Dashboard</h1>
 
-<button>New Post</button>
+<button id="new-post-btn">New Post</button>
 
-<form method="post">
-  <label>
-    <p>Title</p>
-    <input type="text" name="title" id="title-input" />
-  </label>
+<dialog>
+  <h2>New Post</h2>
 
-  <label>
-    <p>Content</p>
-    <textarea name="content" id="content-input"></textarea>
-  </label>
+  <form method="post">
+    <label>
+      <p>Title</p>
+      <input type="text" name="title" id="title-input" />
+    </label>
 
-  <br />
+    <label>
+      <p>Content</p>
+      <textarea name="content" id="content-input"></textarea>
+    </label>
 
-  <button type="submit">Submit</button>
-</form>
+    <br />
+    <br>
+
+    <button type="submit">Submit</button>
+  </form>
+</dialog>
+
 
 <h2>Your Posts</h2>
 {{#each posts}}
   {{> post}}
 {{/each}}
 
+<script lang="js">
+  const dialogEl = document.querySelector("dialog"); 
+  const openDialogEl = document.querySelector("#new-post-btn");
+  openDialogEl.addEventListener("click", () =>
+  dialogEl.showModal());
+</script>

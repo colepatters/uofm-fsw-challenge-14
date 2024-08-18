@@ -45,9 +45,9 @@ handlebars.registerHelper('eq', function(arg1, arg2, options) {
     }
 });
 
-handlebars.registerHelper('format_date', (date) => {
-    return date.toLocaleDateString();
-});
+handlebars.registerHelper('concat', function(arg1, arg2, options) {
+    return arg1 + arg2
+})
 
 app.use(session(sess));
 

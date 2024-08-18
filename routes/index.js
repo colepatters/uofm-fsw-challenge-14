@@ -1,28 +1,18 @@
 const loginRouter = require('./login')
 const registerRouter = require("./register")
 const dashboardRouter = require("./dashboard")
+const postsRouter = require("./post")
 
 const apiRouter = require("./api")
 const { BlogPost, User } = require('../models')
+const { getPosts } = require('../controllers/postController')
 
 const router = require("express").Router()
 
 router.get("/", async function(req, res) {
-    const posts = (await BlogPost.findAll({
-        include: {
-            model: User,
-            attributes: {
-                exclude: ['password']
-            }
-        },
-    })).map(entry => {
-        return {
-            ...entry.dataValues,
-            author: entry.dataValues.user.dataValues
-        }
-    })
+    const posts = await getPosts()
 
-    res.render("index", { user: req.session.user, posts: posts.reverse() })
+    res.render("index", { user: req.session.user, posts })
 })
 
 router.get("/logout", function(req, res) {
@@ -39,6 +29,7 @@ router.get("/logout", function(req, res) {
 router.use("/register", registerRouter)
 router.use("/login", loginRouter)
 router.use("/dashboard", dashboardRouter)
+router.use("/posts", postsRouter)
 
 router.use("/api", apiRouter)
 

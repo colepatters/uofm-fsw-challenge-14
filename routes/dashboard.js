@@ -8,7 +8,6 @@ router.get("/", async function(req, res) {
         return
     }
 
-
     const userPosts = (await BlogPost.findAll({
         where: {
             author: req.session.user.id
@@ -27,7 +26,7 @@ router.get("/", async function(req, res) {
         }
     })
 
-    res.render("dashboard", { posts: userPosts, user: req.session.user })
+    res.render("dashboard", { posts: userPosts.reverse(), user: req.session.user })
 })
 
 router.post("/", async function(req, res) {

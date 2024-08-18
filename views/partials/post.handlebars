@@ -1,8 +1,19 @@
-<div class="blogpost">
-  <h4>{{title}}</h4>
-  <p>{{content}}</p>
-  <p>Posted by {{author.username}} at {{createdAt}}</p>
-</div>
+<a href={{concat "/posts/" id}}>
+  <div class="blogpost">
+    <h4>{{title}}</h4>
+    <p>{{content}}</p>
+    <p>Posted by {{author.username}} at {{createdAt}}</p>
+
+    <hr />
+
+    <strong>Comments</strong>
+    <ul>
+      {{#each comments}}
+        <li>{{content}}</li>
+      {{/each}}
+    </ul>
+  </div>
+</a>
 
 <style>
   .blogpost { border: 2px solid black; padding: 5px; margin-bottom: 10px; }
