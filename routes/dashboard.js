@@ -3,6 +3,12 @@ const { BlogPost, User } = require("../models")
 const router = require("express").Router()
 
 router.get("/", async function(req, res) {
+    if (!req.session.user) {
+        res.redirect("/login")
+        return
+    }
+
+
     const userPosts = (await BlogPost.findAll({
         where: {
             author: req.session.user.id

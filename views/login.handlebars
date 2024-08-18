@@ -1,5 +1,12 @@
 <h1>Login</h1>
 
+{{#if error}}
+  <div id="login-error">
+    <h3>An error occured while loggin in:</h3>
+    <pre>{{error}}</pre>
+  </div>
+{{/if}}
+
 <form method="post">
   <label>
     <p>Username</p>
@@ -15,3 +22,7 @@
 
   <button type="submit">Submit</button>
 </form>
+
+<style>
+  div#login-error { outline: 2px solid red; padding: 5px }
+</style>

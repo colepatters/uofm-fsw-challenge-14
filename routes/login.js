@@ -8,7 +8,7 @@ router.get("/", (req, res) => {
         return
     }
     
-    res.render("login")
+    res.render("login", { error: req.query.error })
 })
 
 router.post("/", async function(req, res) {
